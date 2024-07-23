@@ -3,8 +3,8 @@
 violet::Configuration::Configuration(FileUtility* fileUtility) {
 	m_fileUtility = fileUtility;
 
-	Screen.Width = 800;
-	Screen.Height = 600;
+	Screen.Width = 640;
+	Screen.Height = 480;
 	Screen.Color = 16;
 	Screen.Full = false;
 
@@ -124,7 +124,7 @@ void violet::Configuration::write() {
 				InputHandler::getEventIdentifier(i));
 	}
 
-	boost::filesystem::ofstream ofile(
+	std::ofstream ofile(
 			m_fileUtility->getFullPath(FileUtility::user, "config"));
 	if (ofile) {
 		ofile << cFile;

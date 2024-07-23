@@ -1,7 +1,7 @@
 #ifndef VIOLET_SOUNDMANAGER_H_
 #define VIOLET_SOUNDMANAGER_H_
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "Sound.h"
 #include "../Configuration.h"
@@ -17,7 +17,7 @@ private:
 	FileUtility * m_fileUtility;
 public:
 	SoundManager(FileUtility* fileUtility, Configuration* config);
-	Sound* create(boost::filesystem::path name);
+	Sound* create(std::filesystem::path name);
 	~SoundManager();
 };
 }

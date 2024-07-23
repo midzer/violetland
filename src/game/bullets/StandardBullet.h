@@ -1,7 +1,7 @@
 #ifndef VIOLET_STANDARDBULLET_H_
 #define VIOLET_STANDARDBULLET_H_
 
-#include "SDL_opengl.h"
+#include "GL/gl.h"
 #include "Bullet.h"
 
 namespace violet {

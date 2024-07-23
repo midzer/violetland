@@ -1,7 +1,7 @@
 #ifndef VIOLET_CAMERA_H_
 #define VIOLET_CAMERA_H_
 
-#include "SDL_opengl.h"
+#include "GL/gl.h"
 
 namespace violet {
 

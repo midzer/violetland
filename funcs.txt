@@ -1,0 +1,10 @@
+[
+    "main",
+    "violet::VideoManager::refresh()",
+    "runMainLoop()",
+    "violet::MainMenuWindow::onStartClick()",
+    "drawWindows()",
+    "SDL_Delay",
+    "Emscripten_GLES_SwapWindow",
+    "dynCall_v"
+]

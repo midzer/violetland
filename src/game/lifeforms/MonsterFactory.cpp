@@ -10,7 +10,7 @@ violet::MonsterFactory::MonsterFactory(FileUtility* fileUtility,
 	m_fileUtility = fileUtility;
 	m_sndManager = sndManager;
 
-	boost::filesystem::path monstersPath = 
+	std::filesystem::path monstersPath = 
 			m_fileUtility->getFullPath(FileUtility::monsters, "");
 	std::vector<std::string> monsters = 
 			m_fileUtility->getSubDirsFromDir(monstersPath);
@@ -26,7 +26,7 @@ violet::MonsterFactory::MonsterFactory(FileUtility* fileUtility,
 		MonsterTemplate* mt = new MonsterTemplate(loadMonsterSprite(
 				monsters[j], "walk"), loadMonsterSprite(monsters[j], "death"));
 
-		boost::filesystem::path tmp(monstersPath);
+		std::filesystem::path tmp(monstersPath);
 		tmp /= monsters[j];
 		tmp /= "sounds";
 		tmp /= "hit";
@@ -50,11 +50,11 @@ violet::Sprite* violet::MonsterFactory::loadMonsterSprite(std::string name,
 		std::string animType) {
 	std::vector<SDL_Surface*> animSurfaces;
 	
-	boost::filesystem::path animPath = 
+	std::filesystem::path animPath = 
 			m_fileUtility->getFullPath(FileUtility::monsters, name) /= animType;
 	
 	unsigned int framesCount = 
-		m_fileUtility->getFilesCountFromDir(boost::filesystem::path(animPath));
+		m_fileUtility->getFilesCountFromDir(std::filesystem::path(animPath));
 
 	std::cout << "Monster " << name << ", animation of " << animType << 
 		", frames count: " << framesCount << '.' << std::endl;
@@ -63,7 +63,7 @@ violet::Sprite* violet::MonsterFactory::loadMonsterSprite(std::string name,
 		std::ostringstream oss;
 		oss << i << ".png";
 		SDL_Surface *surface = 
-			ImageUtility::loadImage(boost::filesystem::path(animPath) /= oss.str());
+			ImageUtility::loadImage(std::filesystem::path(animPath) /= oss.str());
 		animSurfaces.push_back(surface);
 	}
 
@@ -81,7 +81,7 @@ violet::Sound* violet::MonsterFactory::loadMonsterSound(std::string soundType,
 
 void violet::MonsterFactory::fillMonsterStats(MonsterTemplate* t,
 		std::string name) {
-	boost::filesystem::ifstream in;
+	std::ifstream in;
 	std::string buf = name + "/stats";
 	in.open(m_fileUtility->getFullPath(FileUtility::monsters, buf));
 	if (!in) {

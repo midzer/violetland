@@ -3,7 +3,7 @@
 
 #include <set>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <boost/filesystem/fstream.hpp>
 
 #include "../system/utility/FileUtility.h"
@@ -34,8 +34,8 @@ class Highscores {
 private:
 	std::set<HighscoresEntry> m_data;
 	const FileUtility* m_fileUtility;
-	const boost::filesystem::path hsFile;
-	const boost::filesystem::path hsTempFile;
+	const std::filesystem::path hsFile;
+	const std::filesystem::path hsTempFile;
 public:
 	Highscores(FileUtility* fileUtility);
 	void clear();

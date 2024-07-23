@@ -18,8 +18,8 @@
  * @return Initialized FileUtility instance for Windows
  */
 violet::FileUtility* violet::FileUtility::ofWindows(char const* argvZero) {
-	boost::filesystem::path const executable = argvZero;
-	boost::filesystem::path const directoryOfExecutable = executable.parent_path();
+	std::filesystem::path const executable = argvZero;
+	std::filesystem::path const directoryOfExecutable = executable.parent_path();
 	
 	return new FileUtility(directoryOfExecutable, directoryOfExecutable);
 }
@@ -35,7 +35,7 @@ violet::FileUtility* violet::FileUtility::ofWindows(char const* argvZero) {
  *
  * @return Initialized FileUtility instance for UNIX
  */
-#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__EMSCRIPTEN__)
 violet::FileUtility* violet::FileUtility::ofUnix() {
 	
 	/* Application binary
@@ -43,13 +43,13 @@ violet::FileUtility* violet::FileUtility::ofUnix() {
 #ifndef INSTALL_PREFIX
 #define INSTALL_PREFIX "/usr/local";
 #endif //INSTALL_PREFIX
-	boost::filesystem::path application = INSTALL_PREFIX;
+	std::filesystem::path application = INSTALL_PREFIX;
 	application /= "bin";
 	
 	
 	/* Application resources
 	 */
-    boost::filesystem::path resources;
+    std::filesystem::path resources;
 #ifndef DATA_INSTALL_DIR
     resources = application / "../share/violetland";
 #else //DATA_INSTALL_DIR
@@ -59,7 +59,7 @@ violet::FileUtility* violet::FileUtility::ofUnix() {
 	
 	/* User data
 	 */
-	boost::filesystem::path user = getenv("HOME");
+	std::filesystem::path user = getenv("HOME");
 	user /= ".config";
 	mkdir(user.string().c_str(), S_IRWXU | S_IRGRP | S_IROTH);
 	user /= "violetland";
@@ -96,7 +96,7 @@ violet::FileUtility* violet::FileUtility::ofOs(char const* argvZero) {
 	 */
 #if defined(_WIN32)
 	return FileUtility::ofWindows(argvZero);
-#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+#elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__EMSCRIPTEN__)
 	return FileUtility::ofUnix();
 #else
 	#error Missing environment specification
@@ -114,8 +114,8 @@ violet::FileUtility* violet::FileUtility::ofOs(char const* argvZero) {
  * @param user Path to user resources
  */
 violet::FileUtility::FileUtility(
-			const boost::filesystem::path& resources,
-			const boost::filesystem::path& user
+			const std::filesystem::path& resources,
+			const std::filesystem::path& user
 		) :	m_resPath(resources),
 			m_usrPath(user) {
 	
@@ -129,31 +129,31 @@ violet::FileUtility::FileUtility(
  * 
  * @param path New path to game resources
  */
-void violet::FileUtility::setResourcePath(boost::filesystem::path const& path) {
+void violet::FileUtility::setResourcePath(std::filesystem::path const& path) {
 	m_resPath = path;
 	traceResPath();
 }
 
 
 
-unsigned int violet::FileUtility::getFilesCountFromDir(boost::filesystem::path dir)  {
+unsigned int violet::FileUtility::getFilesCountFromDir(std::filesystem::path dir)  {
 	unsigned int count = 0;
-	boost::filesystem::directory_iterator dir_it(dir);
+	std::filesystem::directory_iterator dir_it(dir);
 
-	while (dir_it != boost::filesystem::directory_iterator()) {
-		if (boost::filesystem::is_regular_file(*dir_it))
+	while (dir_it != std::filesystem::directory_iterator()) {
+		if (std::filesystem::is_regular_file(*dir_it))
 			++count;
 		++dir_it;
 	}
 	return count;
 }
 
-std::vector<std::string> violet::FileUtility::getFilesFromDir(boost::filesystem::path dir) {
+std::vector<std::string> violet::FileUtility::getFilesFromDir(std::filesystem::path dir) {
 	std::vector<std::string> files;
-	boost::filesystem::directory_iterator dir_it(dir);
+	std::filesystem::directory_iterator dir_it(dir);
 
-	while (dir_it != boost::filesystem::directory_iterator()) {
-		if (boost::filesystem::is_regular_file(*dir_it)) {
+	while (dir_it != std::filesystem::directory_iterator()) {
+		if (std::filesystem::is_regular_file(*dir_it)) {
 			files.push_back(dir_it->path().filename().string());
 		}
 		++dir_it;
@@ -161,12 +161,12 @@ std::vector<std::string> violet::FileUtility::getFilesFromDir(boost::filesystem:
 	return files;
 }
 
-std::vector<std::string> violet::FileUtility::getSubDirsFromDir(boost::filesystem::path dir) {
+std::vector<std::string> violet::FileUtility::getSubDirsFromDir(std::filesystem::path dir) {
 	std::vector<std::string> subDirs;
-	boost::filesystem::directory_iterator dir_it(dir);
+	std::filesystem::directory_iterator dir_it(dir);
 
-	while (dir_it != boost::filesystem::directory_iterator()) {
-		if (boost::filesystem::is_directory(*dir_it))
+	while (dir_it != std::filesystem::directory_iterator()) {
+		if (std::filesystem::is_directory(*dir_it))
 			if (dir_it->path().filename().string()[0] != '.')
 				subDirs.push_back(dir_it->path().filename().string());
 		++dir_it;
@@ -174,12 +174,12 @@ std::vector<std::string> violet::FileUtility::getSubDirsFromDir(boost::filesyste
 	return subDirs;
 }
 
-unsigned int violet::FileUtility::getSubDirsCountFromDir(boost::filesystem::path dir) {
-	boost::filesystem::directory_iterator dir_it(dir);
+unsigned int violet::FileUtility::getSubDirsCountFromDir(std::filesystem::path dir) {
+	std::filesystem::directory_iterator dir_it(dir);
 	unsigned int count = 0;
 
-	while (dir_it != boost::filesystem::directory_iterator()) {
-		if (boost::filesystem::is_directory(*dir_it))
+	while (dir_it != std::filesystem::directory_iterator()) {
+		if (std::filesystem::is_directory(*dir_it))
 			if (dir_it->path().filename().string()[0] != '.')
 				++count;
 		++dir_it;
@@ -189,9 +189,9 @@ unsigned int violet::FileUtility::getSubDirsCountFromDir(boost::filesystem::path
 
 
 
-boost::filesystem::path violet::FileUtility::getFullPath(PathType type, std::string resource) const {
-	boost::filesystem::path path(m_resPath);
-	boost::filesystem::path usrPath(m_usrPath);
+std::filesystem::path violet::FileUtility::getFullPath(PathType type, std::string resource) const {
+	std::filesystem::path path(m_resPath);
+	std::filesystem::path usrPath(m_usrPath);
 
 	switch (type) {
 	case FileUtility::image:

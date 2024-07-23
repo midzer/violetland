@@ -25,7 +25,7 @@
 #include <iostream>
 #include <sstream>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <boost/filesystem/fstream.hpp>
 
 namespace violet {
@@ -41,7 +41,7 @@ protected:
 	typedef std::map<std::string, std::string>::const_iterator mapci;
 
 public:
-	ConfigFile(boost::filesystem::path filename, std::string delimiter = "=",
+	ConfigFile(std::filesystem::path filename, std::string delimiter = "=",
 			std::string comment = "#", std::string sentry = "EndConfigFile");
 	ConfigFile();
 
@@ -86,8 +86,8 @@ protected:
 
 public:
 	struct file_not_found {
-		boost::filesystem::path filename;
-		file_not_found(boost::filesystem::path filename = boost::filesystem::path()) :
+		std::filesystem::path filename;
+		file_not_found(std::filesystem::path filename = std::filesystem::path()) :
 			filename(filename) {
 		}
 	};

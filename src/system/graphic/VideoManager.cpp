@@ -97,7 +97,7 @@ void violet::VideoManager::setMode(VideoMode mode, Camera* cam) {
 	Window = SDL_CreateWindow ("",
 	                           SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 	                           mode.Width, mode.Height,
-	                           SDL_WINDOW_OPENGL | ((mode.Full)? SDL_WINDOW_FULLSCREEN: 0));
+	                           SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI | ((mode.Full)? SDL_WINDOW_FULLSCREEN: 0));
 	if (Window == NULL) {
 		std::cerr << "Couldn't create Window: " << SDL_GetError() << std::endl;
 		exit(2);
@@ -118,7 +118,9 @@ void violet::VideoManager::setMode(VideoMode mode, Camera* cam) {
 	Scale = (float) mode.Width / 800;
 
 	std::cout << "glViewport..." << std::endl;
-	glViewport(0, 0, mode.Width, mode.Height);
+	int drawableWidth, drawableHeight;
+	SDL_GL_GetDrawableSize(Window, &drawableWidth, &drawableHeight);
+	glViewport(0, 0, drawableWidth, drawableHeight);
 
 	if (RegularText != NULL) {
 		delete RegularText;
@@ -128,7 +130,7 @@ void violet::VideoManager::setMode(VideoMode mode, Camera* cam) {
 	}
 
 	std::cout << "Preparing fonts..." << std::endl;
-	boost::filesystem::path fontPath = m_fileUtility->getFullPath(
+	std::filesystem::path fontPath = m_fileUtility->getFullPath(
 			FileUtility::common, "fonts/xolonium/Xolonium-Regular.ttf");
 
 	RegularText = new TextManager(fontPath, 35 * WK);

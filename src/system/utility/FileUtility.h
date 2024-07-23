@@ -1,7 +1,7 @@
 #ifndef VIOLET_FILEUTILITY_H_
 #define VIOLET_FILEUTILITY_H_
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -11,8 +11,8 @@ namespace violet {
 
 class FileUtility {
 private:
-	boost::filesystem::path m_resPath;
-	boost::filesystem::path m_usrPath;
+	std::filesystem::path m_resPath;
+	std::filesystem::path m_usrPath;
 	
 	static FileUtility* ofWindows(char const* argvZero);
 	static FileUtility* ofUnix();
@@ -36,17 +36,17 @@ public:
 	static FileUtility* ofOs(char const* argvZero);
 	
 	
-	static unsigned int getFilesCountFromDir(boost::filesystem::path dir);
-	static unsigned int getSubDirsCountFromDir(boost::filesystem::path dir);
-	static std::vector<std::string> getFilesFromDir(boost::filesystem::path dir);
-	static std::vector<std::string> getSubDirsFromDir(boost::filesystem::path dir);
+	static unsigned int getFilesCountFromDir(std::filesystem::path dir);
+	static unsigned int getSubDirsCountFromDir(std::filesystem::path dir);
+	static std::vector<std::string> getFilesFromDir(std::filesystem::path dir);
+	static std::vector<std::string> getSubDirsFromDir(std::filesystem::path dir);
 	
 	
-	FileUtility(	boost::filesystem::path const& resources,
-			boost::filesystem::path const& user);
+	FileUtility(	std::filesystem::path const& resources,
+			std::filesystem::path const& user);
 
-	void setResourcePath(boost::filesystem::path const& path);
-	boost::filesystem::path getFullPath(PathType type, std::string resource) const;
+	void setResourcePath(std::filesystem::path const& path);
+	std::filesystem::path getFullPath(PathType type, std::string resource) const;
 };
 }
 

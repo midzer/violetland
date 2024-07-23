@@ -1,7 +1,7 @@
 #ifndef VIOLET_TEXTMANAGER_H_
 #define VIOLET_TEXTMANAGER_H_
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "TextObject.h"
 
@@ -20,7 +20,7 @@ public:
 	enum TextVAlignFlag {
 		TOP, MIDDLE, BOTTOM
 	};
-	TextManager(boost::filesystem::path fontPath, int fontSize);
+	TextManager(std::filesystem::path fontPath, int fontSize);
 	void draw(const std::string& textBuf, float x, float y, TextHAlignFlag halign,
 			TextVAlignFlag valign);
 	const int getHeight() const {

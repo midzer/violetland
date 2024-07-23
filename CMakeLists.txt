@@ -12,35 +12,35 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Modules/sdl2)
 # SDL
 find_package(SDL2 REQUIRED)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${SDL2_INCLUDE_DIR})
-set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_LIBRARY})
+set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_LIBRARIES})
 
 
 # SDL_image
-find_package(SDL2_image REQUIRED)
+find_package(SDL2_image)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${SDL2_IMAGE_INCLUDE_DIR})
-set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_IMAGE_LIBRARY})
+set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_image_LIBRARIES})
 
 
 # SDL_ttf
-find_package(SDL2_ttf REQUIRED)
+find_package(SDL2_ttf)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${SDL2_TTF_INCLUDE_DIR})
-set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_TTF_LIBRARY})
+set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_ttf_LIBRARIES})
 
 
 # SDL_mixer
-find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_mixer)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${SDL2_MIXER_INCLUDE_DIR})
-set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_MIXER_LIBRARY})
+set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${SDL2_mixer_LIBRARIES})
 
 
 # OpenGL
-find_package(OpenGL REQUIRED)
+find_package(OpenGL)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${OPENGL_INCLUDE_DIR})
 set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${OPENGL_LIBRARIES})
 
 
 # Boost
-find_package(Boost COMPONENTS filesystem system REQUIRED)
+find_package(Boost COMPONENTS filesystem system)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${Boost_INCLUDE_DIRS})
 set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${Boost_LIBRARIES})
 add_definitions(-DBOOST_FILESYSTEM_VERSION=3)
@@ -50,6 +50,8 @@ add_definitions(-DBOOST_FILESYSTEM_VERSION=3)
 find_package(Intl REQUIRED)
 set(VIOLET_INCLUDE_DIRS	${VIOLET_INCLUDE_DIRS}	${Intl_INCLUDE_DIR})
 set(VIOLET_LIBRARIES	${VIOLET_LIBRARIES}	${Intl_LIBRARIES})
+
+include_directories(include/)
 
 
 
@@ -65,7 +67,7 @@ endif(DEFINED LOCALE_INSTALL_DIR)
 add_definitions(-DINSTALL_PREFIX="${CMAKE_INSTALL_PREFIX}")
 add_definitions(-DLOCALE_DIR="${LOCALEDIR}")
 
-add_subdirectory(po)
+#add_subdirectory(po)
 
 
 
@@ -166,7 +168,7 @@ set(VIOLET_SOURCES
 )
 
 # Boost >= 1.79.0 requires C++11
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -flto -O3")
 
 # Compiler diagnostics are most useful
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
@@ -175,7 +177,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-ignored-qualifiers -Wno-unu
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	# clang++ does not understand boost_static_assert_typedef's unused
 	# attribute
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedef")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedef -sUSE_SDL=2 -sUSE_SDL_IMAGE=2 -sUSE_SDL_MIXER=2 -sUSE_SDL_TTF=2")
 endif()
 
 
@@ -201,7 +203,7 @@ endif()
 # Build executable
 include_directories(${VIOLET_INCLUDE_DIRS})
 add_executable(violetland ${VIOLET_RESOURCES} ${VIOLET_SOURCES})
-target_link_libraries(violetland ${VIOLET_LIBRARIES})
+#target_link_libraries(violetland ${VIOLET_LIBRARIES} SDL2::SDL2 SDL2_image::SDL2_image SDL2_ttf::SDL2_ttf SDL2_mixer::SDL2_mixer)
 
 
 

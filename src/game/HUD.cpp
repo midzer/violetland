@@ -2,6 +2,7 @@
 
 #include <libintl.h>
 #include <sstream>
+#include "GL/gl.h"
 
 #define _(STRING)            gettext(STRING)
 

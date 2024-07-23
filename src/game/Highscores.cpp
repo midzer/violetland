@@ -23,7 +23,7 @@ Highscores::Highscores(FileUtility* fileUtility):
 }
 
 void Highscores::read() {
-	boost::filesystem::ifstream ifile(hsFile, ios::binary);
+	std::ifstream ifile(hsFile, ios::binary);
 	if (!ifile.fail()) {
 		while (true) {
 			float Strength;
@@ -73,7 +73,7 @@ bool Highscores::isHighscore(unsigned Xp) {
 }
 
 void Highscores::clear() {
-	boost::filesystem::remove(hsFile);
+	std::filesystem::remove(hsFile);
 }
 
 bool Highscores::add(HighscoresEntry entry) {
@@ -87,7 +87,7 @@ bool Highscores::add(HighscoresEntry entry) {
 		return false;
 	
 	
-	boost::filesystem::ofstream ofile(hsTempFile, ios::binary);
+	std::ofstream ofile(hsTempFile, ios::binary);
 	if (!ofile.fail()) {
 		set<HighscoresEntry>::iterator it = m_data.begin();
 		for (; it != m_data.end(); ++it) {
@@ -104,9 +104,9 @@ bool Highscores::add(HighscoresEntry entry) {
 		}
 		ofile.close();
 
-		boost::filesystem::copy_file(hsTempFile, hsFile, 
-				boost::filesystem::copy_option::overwrite_if_exists);
-		boost::filesystem::remove(hsTempFile);
+		std::filesystem::copy_file(hsTempFile, hsFile, 
+				std::filesystem::copy_options::overwrite_existing);
+		std::filesystem::remove(hsTempFile);
 
 		cout << "Scores was updated." << endl;
 	} else {

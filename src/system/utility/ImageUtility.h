@@ -2,10 +2,10 @@
 #define VIOLET_IMAGEUTILITY_H_
 
 #include <iostream>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include "SDL_ttf.h"
 #include "SDL_image.h"
-#include "SDL_opengl.h"
+#include "GL/gl.h"
 
 
 
@@ -16,7 +16,7 @@ public:
 	enum FontRenderingFlag {
 		solid, shaded, blended
 	};
-	static SDL_Surface *loadImage(boost::filesystem::path);
+	static SDL_Surface *loadImage(std::filesystem::path);
 	static SDL_Surface *createImage(
 			TTF_Font *font,
 			Uint8 fgR, Uint8 fgG, Uint8 fgB, Uint8 fgA,

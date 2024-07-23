@@ -1,7 +1,7 @@
 #ifndef VIOLET_LASERBULLET_H_
 #define VIOLET_LASERBULLET_H_
 
-#include "SDL_opengl.h"
+#include "GL/gl.h"
 #include "Bullet.h"
 
 namespace violet {

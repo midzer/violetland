@@ -1,6 +1,6 @@
 #include "ImageUtility.h"
 
-SDL_Surface* violet::ImageUtility::loadImage(boost::filesystem::path fileName) {
+SDL_Surface* violet::ImageUtility::loadImage(std::filesystem::path fileName) {
 	SDL_Surface *image = IMG_Load(fileName.string().c_str());
 	if (image == NULL) {
 		std::cerr << "Couldn't load " << fileName << ": " << SDL_GetError() << std::endl;

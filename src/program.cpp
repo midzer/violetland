@@ -18,12 +18,12 @@
 // SDL
 #include "SDL.h"
 #include "SDL_image.h"
-#include "SDL_opengl.h"
+#include "GL/gl.h"
 #include "SDL_ttf.h"
 
 // Boost
 #include <boost/bind.hpp>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <boost/format.hpp>
 
 //~ Internationalization Dependances
@@ -63,6 +63,8 @@
 #include "windows/MainMenuWindow.h"
 #include "windows/OptionsWindow.h"
 #include "windows/RestartWindow.h"
+
+#include "gl4esinit.h"
 
 using namespace std;
 using namespace violet;
@@ -109,26 +111,26 @@ void createTerrain() {
 
 	cout << "Forming terrain..." << endl;
 
-	boost::filesystem::path tilesDir = fileUtility->getFullPath(
+	std::filesystem::path tilesDir = fileUtility->getFullPath(
 			FileUtility::image, "terrain");
 	unsigned baseTex = rand() % fileUtility->getFilesCountFromDir(tilesDir);
 
 	ostringstream oss;
 	oss << baseTex;
 	unsigned tilesCount = fileUtility->getFilesCountFromDir(
-			boost::filesystem::path(tilesDir) /= oss.str());
+			std::filesystem::path(tilesDir) /= oss.str());
 
 	oss.str("");
 	oss << "base_" << baseTex << ".png";
 	SDL_Surface *terrainSurface = ImageUtility::loadImage(
-			boost::filesystem::path(tilesDir) /= oss.str());
+			std::filesystem::path(tilesDir) /= oss.str());
 
 	vector<SDL_Surface*> tiles;
 	for (unsigned i = 0; i < tilesCount; i++) {
 		oss.str("");
 		oss << baseTex << '/' << i << ".png";
 		SDL_Surface *tile = ImageUtility::loadImage(
-				boost::filesystem::path(tilesDir) /= oss.str());
+				std::filesystem::path(tilesDir) /= oss.str());
 		tiles.push_back(tile);
 	}
 
@@ -1924,7 +1926,7 @@ void loadResources() {
 void parsePreferences(int argc, char** argv) {
 	fileUtility = FileUtility::ofOs(argv[0]);
 	config = new Configuration(fileUtility);
-	config->read();
+	//config->read();
 
 	for (int i = 1; i < argc; i++) {
 		string arg = argv[i];
@@ -1996,6 +1998,8 @@ int main(int argc, char** argv) {
 	printVersion();
 
 	parsePreferences(argc, argv);
+
+	initialize_gl4es();
 
 	initSystem();
 
